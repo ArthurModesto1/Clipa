@@ -11,7 +11,7 @@
     "test": "npm run test:electron && npm run test:backend",
     "test:electron": "node --test tests/*.test.js",
     "test:backend": "node scripts/python-task.js test",
-    "check": "node --check electron/main.js && node --check electron/preload.js && node --check electron/renderer.js",
+    "check": "node --check electron/main.js && node --check electron/preload.js && node --check electron/renderer.js && node --check electron/theme.js",
     "build:backend": "node scripts/python-task.js build",
     "start": "electron .",
     "prebuild:win": "npm test && npm run build:backend",

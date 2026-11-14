@@ -499,6 +499,13 @@ for (const [id, method] of [
 }
 
 async function init() {
+  document.querySelectorAll('input[name="theme"]').forEach((input) => {
+    input.checked = input.value === document.documentElement.dataset.theme;
+    input.addEventListener('change', () => {
+      document.documentElement.dataset.theme = input.value;
+      store('clipa-theme', input.value);
+    });
+  });
   setMode('video');
   renderFolder();
   renderCookies();

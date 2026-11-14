@@ -8,6 +8,7 @@
       content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https: data:; connect-src http://127.0.0.1:*; object-src 'none'; base-uri 'none'; form-action 'none'"
     />
     <title>Clipa</title>
+    <script src="theme.js"></script>
     <link rel="stylesheet" href="styles.css" />
     <script src="renderer.js" defer></script>
   </head>
@@ -215,6 +216,27 @@
             </div>
           </div>
           <div class="settings-sheet">
+            <section class="setting-section">
+              <h2>Aparência</h2>
+              <p>Escolha o tema do aplicativo. Sua preferência fica salva neste computador.</p>
+              <fieldset class="theme-options">
+                <legend>Tema do aplicativo</legend>
+                <label class="mode-choice">
+                  <input type="radio" name="theme" value="light" checked />
+                  <span
+                    ><span class="theme-swatch light-swatch" aria-hidden="true"></span
+                    ><strong>Claro</strong><i></i
+                  ></span>
+                </label>
+                <label class="mode-choice">
+                  <input type="radio" name="theme" value="dark" />
+                  <span
+                    ><span class="theme-swatch dark-swatch" aria-hidden="true"></span
+                    ><strong>Escuro</strong><i></i
+                  ></span>
+                </label>
+              </fieldset>
+            </section>
             <section class="setting-section">
               <h2>Pasta de download</h2>
               <p>Usada para os próximos arquivos que você baixar.</p>

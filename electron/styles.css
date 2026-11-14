@@ -10,10 +10,53 @@
   --line: #dce1ef;
   --danger: #a82c45;
   --success: #217351;
+  --on-accent: #fff;
+  --input-border: #c6cdf2;
+  --placeholder: #858da5;
+  --hover-border: #a9b3d8;
+  --hover-surface: #fafbff;
+  --preview-bg: #e2e7f6;
+  --preview-ink: #7481b5;
+  --radio-border: #b2bad3;
+  --selected-bg: #eef0ff;
+  --progress-border: #c9d1f5;
+  --error-bg: #fff1f4;
+  --empty-border: #c4cce4;
+  --youtube: #b72438;
+  --instagram: #a5357e;
+  --toast-bg: #1e2547;
   font-family: 'Segoe UI Variable', 'Segoe UI', sans-serif;
   font-size: 14px;
   color: var(--ink);
   background: var(--paper);
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --paper: #151a2c;
+  --white: #1d243a;
+  --ink: #edf0ff;
+  --blue: #a2afff;
+  --blue-hover: #bac3ff;
+  --lilac: #2a3355;
+  --muted: #b0b9d1;
+  --line: #39435f;
+  --danger: #ffabbc;
+  --success: #85d6b0;
+  --on-accent: #161d3b;
+  --input-border: #495577;
+  --placeholder: #a0abc6;
+  --hover-border: #7181b1;
+  --hover-surface: #29324e;
+  --preview-bg: #2d3857;
+  --preview-ink: #a9b7e6;
+  --radio-border: #8290b5;
+  --selected-bg: #2a355c;
+  --progress-border: #56668e;
+  --error-bg: #3e2638;
+  --empty-border: #56617f;
+  --youtube: #ff94a2;
+  --instagram: #eaa1d4;
+  --toast-bg: #35426a;
 }
 * {
   box-sizing: border-box;
@@ -138,7 +181,7 @@ svg use {
   border-radius: 12px;
   width: 38px;
   height: 43px;
-  color: white;
+  color: var(--on-accent);
 }
 .brand-symbol svg {
   width: 28px;
@@ -256,7 +299,7 @@ h1 {
   display: flex;
   align-items: center;
   background: var(--white);
-  border: 1px solid #c6cdf2;
+  border: 1px solid var(--input-border);
   border-radius: 8px;
   padding: 6px;
   gap: 10px;
@@ -284,7 +327,7 @@ h1 {
   outline: none;
 }
 .url-row input::placeholder {
-  color: #858da5;
+  color: var(--placeholder);
 }
 .button {
   border: 1px solid transparent;
@@ -301,7 +344,7 @@ h1 {
 }
 .primary {
   background: var(--blue);
-  color: var(--white);
+  color: var(--on-accent);
 }
 .primary:hover:not(:disabled) {
   background: var(--blue-hover);
@@ -311,8 +354,8 @@ h1 {
   border-color: var(--line);
 }
 .secondary:hover {
-  border-color: #a9b3d8;
-  background: #fafbff;
+  border-color: var(--hover-border);
+  background: var(--hover-surface);
 }
 .platforms {
   display: flex;
@@ -335,11 +378,11 @@ h1 {
   font-weight: 650;
 }
 .platforms .platform-youtube {
-  color: #b72438;
+  color: var(--youtube);
   font-size: 12px;
 }
 .platforms .platform-instagram {
-  color: #a5357e;
+  color: var(--instagram);
   font-size: 20px;
 }
 .platforms > span.detected {
@@ -366,13 +409,13 @@ h1 {
 .preview-art {
   width: 106px;
   height: 74px;
-  background: #e2e7f6;
+  background: var(--preview-bg);
   border-radius: 7px;
   display: grid;
   place-items: center;
   flex-shrink: 0;
   overflow: hidden;
-  color: #7481b5;
+  color: var(--preview-ink);
 }
 .preview-art svg {
   width: 32px;
@@ -462,19 +505,19 @@ h1 {
 .mode-choice i {
   width: 12px;
   height: 12px;
-  border: 1px solid #b2bad3;
+  border: 1px solid var(--radio-border);
   border-radius: 50%;
   margin-left: auto;
   flex-shrink: 0;
 }
 .mode-choice input:checked + span {
   border-color: var(--blue);
-  background: #eef0ff;
+  background: var(--selected-bg);
   color: var(--blue);
 }
 .mode-choice input:checked + span i {
   border: 4px solid var(--blue);
-  background: white;
+  background: var(--white);
 }
 .mode-choice input:focus-visible + span {
   outline: 3px solid #8995ff;
@@ -497,7 +540,7 @@ h1 {
 }
 .select-row select {
   width: 100%;
-  background: white;
+  background: var(--white);
   border: 1px solid var(--line);
   border-radius: 7px;
   padding: 10px;
@@ -606,9 +649,9 @@ h1 {
 .progress-section {
   margin-top: 25px;
   padding: 19px 22px;
-  border: 1px solid #c9d1f5;
+  border: 1px solid var(--progress-border);
   border-radius: 10px;
-  background: white;
+  background: var(--white);
 }
 .progress-header {
   display: flex;
@@ -664,7 +707,7 @@ progress:not([value])::-webkit-progress-value {
 }
 .message {
   border-left: 3px solid var(--danger);
-  background: #fff1f4;
+  background: var(--error-bg);
   padding: 14px 18px;
   border-radius: 4px;
   margin-bottom: 22px;
@@ -684,8 +727,8 @@ progress:not([value])::-webkit-progress-value {
 }
 .empty-state {
   padding: 65px 25px;
-  background: white;
-  border: 1px dashed #c4cce4;
+  background: var(--white);
+  border: 1px dashed var(--empty-border);
   border-radius: 12px;
   text-align: center;
 }
@@ -741,7 +784,7 @@ progress:not([value])::-webkit-progress-value {
 .settings-sheet {
   border: 1px solid var(--line);
   border-radius: 12px;
-  background: white;
+  background: var(--white);
   padding: 0 28px;
 }
 .setting-section {
@@ -753,6 +796,35 @@ progress:not([value])::-webkit-progress-value {
 .setting-section h2 {
   font-size: 17px;
   font-weight: 600;
+}
+.theme-options {
+  display: flex;
+  gap: 12px;
+  max-width: 360px;
+  border: 0;
+  padding: 0;
+  margin: 16px 0 0;
+}
+.theme-options legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.theme-swatch {
+  width: 25px;
+  height: 25px;
+  border: 1px solid #7d88ab;
+  border-left: 7px solid #5266d8;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+.light-swatch {
+  background: #f3f5fc;
+}
+.dark-swatch {
+  background: #151a2c;
 }
 .setting-section > p {
   font-size: 12px;
@@ -799,7 +871,7 @@ progress:not([value])::-webkit-progress-value {
   transform: translateX(-50%);
   padding: 13px 22px;
   border-radius: 8px;
-  background: var(--ink);
+  background: var(--toast-bg);
   color: white;
   box-shadow: 0 5px 20px #1e254726;
   font-size: 12px;

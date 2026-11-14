@@ -9,6 +9,7 @@ Instagram e TikTok**, com processamento no próprio computador.
 - Escolha da pasta, progresso, cancelamento e histórico local de até 100 downloads.
 - Arquivo de sessão opcional para publicações que exigem login.
 - Interface em português, sem fontes ou scripts externos.
+- Temas claro e escuro em **Configurações → Aparência**, com preferência salva localmente.
 
 O Clipa baixa uma publicação por vez, não perfis inteiros ou playlists. Em posts
 com vários vídeos, utiliza o primeiro vídeo retornado pelo extrator. Fotos,
