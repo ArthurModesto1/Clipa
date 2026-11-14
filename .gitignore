@@ -1,0 +1,48 @@
+# Installed dependencies and Python environments
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Build output and local diagnostics
+dist/
+build/
+python/dist/
+python/build/
+python/*.spec
+tools/
+Clipa/
+diagnostic-download/
+.artifacts/
+*.log
+*.log.*
+*.part
+*.ytdl
+*.mp3
+*.mp4
+*.m4a
+*.aac
+*.flac
+*.wav
+*.opus
+*.webm
+*.mkv
+
+# Credentials and exported sessions
+.env
+.env.*
+!.env.example
+*cookies*.txt
+*session*.txt
+*.pem
+*.key
+
+# Editors and OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/

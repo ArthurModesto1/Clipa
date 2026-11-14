@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https: data:; connect-src http://127.0.0.1:*; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>Clipa</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="renderer.js" defer></script>
+  </head>
+  <body>
+    <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <symbol id="i-download" viewBox="0 0 24 24">
+        <path d="M12 3v12m-4-4 4 4 4-4M4 16v4h16v-4" />
+      </symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7v5l3 2" />
+      </symbol>
+      <symbol id="i-settings" viewBox="0 0 24 24">
+        <path d="M4 7h16M4 17h16" />
+        <circle cx="9" cy="7" r="3" />
+        <circle cx="16" cy="17" r="3" />
+      </symbol>
+      <symbol id="i-video" viewBox="0 0 24 24">
+        <rect x="3" y="5" width="18" height="14" rx="3" />
+        <path d="m10 9 5 3-5 3z" />
+      </symbol>
+      <symbol id="i-audio" viewBox="0 0 24 24">
+        <path d="M10 17V5l10-2v12M10 8l10-2" />
+        <ellipse cx="6.5" cy="17.5" rx="3.5" ry="2.5" />
+        <ellipse cx="16.5" cy="15.5" rx="3.5" ry="2.5" />
+      </symbol>
+      <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V4h6l3 3h9v13H3z" /></symbol>
+      <symbol id="i-link" viewBox="0 0 24 24">
+        <path d="m9 15 6-6m-8 4-2 2a4 4 0 0 0 6 6l3-3m-4-12 3-3a4 4 0 0 1 6 6l-2 2" />
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></symbol>
+      <symbol id="i-clip" viewBox="0 0 32 32">
+        <rect x="5" y="5" width="17" height="23" rx="5" />
+        <rect x="12" y="3" width="15" height="21" rx="5" />
+      </symbol>
+    </svg>
+
+    <header class="titlebar">
+      <span class="titlebar-name">Clipa</span
+      ><span class="titlebar-caption">Seu arquivo, do seu jeito.</span>
+      <div class="window-controls">
+        <button id="winMin" aria-label="Minimizar">−</button>
+        <button id="winMax" aria-label="Maximizar ou restaurar">□</button>
+        <button id="winClose" aria-label="Fechar">×</button>
+      </div>
+    </header>
+    <div class="app-layout">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-symbol"
+            ><svg><use href="#i-clip" /></svg></span
+          ><span>clipa<span class="brand-period">.</span></span>
+        </div>
+        <nav aria-label="Principal">
+          <button class="nav-button active" data-page="download" aria-current="page">
+            <svg><use href="#i-download" /></svg>Baixar
+          </button>
+          <button class="nav-button" data-page="history">
+            <svg><use href="#i-clock" /></svg>Histórico<span id="historyCount" class="count"
+              >0</span
+            >
+          </button>
+          <button class="nav-button" data-page="settings">
+            <svg><use href="#i-settings" /></svg>Configurações
+          </button>
+        </nav>
+        <div class="sidebar-bottom">
+          <span class="local-indicator"></span>Feito no seu computador<small>Clipa 1.1.0</small>
+        </div>
+      </aside>
+
+      <main>
+        <section id="page-download" class="page">
+          <div class="page-heading">
+            <div>
+              <h1>Um link. Seu próximo arquivo.</h1>
+              <p>Salve vídeos ou só o áudio, direto no seu computador.</p>
+            </div>
+          </div>
+          <form id="linkForm" class="link-dock">
+            <label for="urlInput">Cole o link da publicação</label>
+            <div class="url-row">
+              <svg><use href="#i-link" /></svg
+              ><input
+                id="urlInput"
+                type="text"
+                inputmode="url"
+                placeholder="https://…"
+                required
+                autocomplete="off"
+                spellcheck="false"
+                aria-describedby="platformHelp"
+              /><button id="fetchBtn" class="button primary" type="submit">Buscar mídia</button>
+            </div>
+            <div id="platformHelp" class="platforms">
+              <span data-platform="YouTube"><b class="platform-youtube">▶</b>YouTube</span
+              ><span data-platform="X"><b>𝕏</b>X / Twitter</span
+              ><span data-platform="Instagram"><b class="platform-instagram">◎</b>Instagram</span
+              ><span data-platform="TikTok"><b>♪</b>TikTok</span>
+            </div>
+          </form>
+          <div id="message" class="message" role="alert" hidden>
+            <strong id="messageTitle"></strong>
+            <p id="messageHint"></p>
+            <button id="messageSettings" class="text-button" hidden>Abrir configurações</button>
+          </div>
+          <div class="workbench">
+            <div class="workbench-main">
+              <div id="mediaPreview" class="media-preview">
+                <div class="preview-art">
+                  <svg id="previewPlaceholder"><use href="#i-video" /></svg
+                  ><img id="previewThumb" alt="Capa do vídeo" hidden />
+                </div>
+                <div class="preview-copy">
+                  <span id="previewPlatform" class="subtle-label">Sua mídia aparece aqui</span>
+                  <h2 id="previewTitle">Pronto para o próximo play.</h2>
+                  <p id="previewMeta">Busque um link para conferir o título e a duração.</p>
+                </div>
+              </div>
+              <fieldset class="mode-fieldset">
+                <legend>O que você quer salvar?</legend>
+                <div class="mode-switch">
+                  <label class="mode-choice"
+                    ><input type="radio" name="mode" value="video" checked /><span
+                      ><svg><use href="#i-video" /></svg
+                      ><span><strong>Vídeo</strong><small>Imagem e som</small></span
+                      ><i></i></span
+                  ></label>
+                  <label class="mode-choice"
+                    ><input type="radio" name="mode" value="audio" /><span
+                      ><svg><use href="#i-audio" /></svg
+                      ><span><strong>Áudio</strong><small>Só o que você quer ouvir</small></span
+                      ><i></i></span
+                  ></label>
+                </div>
+              </fieldset>
+              <div class="select-row">
+                <label
+                  ><span id="qualityLabel">Resolução máxima</span
+                  ><select id="qualitySelect"></select></label
+                ><label>Formato<select id="formatSelect"></select></label>
+              </div>
+              <p id="qualityHint" class="field-hint">
+                Usamos a melhor resolução disponível até o limite escolhido.
+              </p>
+              <div class="destination">
+                <svg><use href="#i-folder" /></svg>
+                <div>
+                  <span>Salvar em</span>
+                  <p id="folderPath">Carregando pasta…</p>
+                </div>
+                <button id="chooseFolder" class="text-button">Alterar</button>
+              </div>
+            </div>
+            <aside class="download-panel" aria-label="Resumo do download">
+              <span id="fileType" class="file-type"
+                >MP4<svg><use href="#i-video" /></svg
+              ></span>
+              <h2>Pronto para salvar</h2>
+              <p id="summaryText">Vídeo em até 1080p, com imagem e som.</p>
+              <button id="downloadBtn" class="button primary download-button" disabled>
+                <svg><use href="#i-download" /></svg>Baixar vídeo
+              </button>
+              <p class="panel-note">O arquivo fica com você.<br />Sem anúncios no caminho.</p>
+            </aside>
+          </div>
+          <section
+            id="progressSection"
+            class="progress-section"
+            aria-label="Andamento do download"
+            hidden
+          >
+            <div class="progress-header">
+              <strong id="progressLabel" aria-live="polite">Preparando download…</strong
+              ><span id="progressPercent">0%</span>
+            </div>
+            <progress id="progressBar" max="100" aria-label="Progresso do download"></progress>
+            <div class="progress-details">
+              <span id="progressDetails">Conectando à plataforma…</span
+              ><button id="cancelBtn" class="text-button">Cancelar</button
+              ><button id="openFolderBtn" class="text-button" hidden>Abrir pasta</button>
+            </div>
+          </section>
+          <p class="download-footnote">
+            Use links de publicações com vídeo. Alguns conteúdos exigem sua sessão da plataforma.
+          </p>
+        </section>
+
+        <section id="page-history" class="page" hidden>
+          <div class="page-heading">
+            <div>
+              <h1>Já está com você.</h1>
+              <p>Seus últimos arquivos salvos por aqui.</p>
+            </div>
+            <button id="clearHistory" class="button secondary">Limpar histórico</button>
+          </div>
+          <div id="historyList"></div>
+        </section>
+
+        <section id="page-settings" class="page" hidden>
+          <div class="page-heading">
+            <div>
+              <h1>Do seu jeito.</h1>
+              <p>Destino dos arquivos e acesso às plataformas.</p>
+            </div>
+          </div>
+          <div class="settings-sheet">
+            <section class="setting-section">
+              <h2>Pasta de download</h2>
+              <p>Usada para os próximos arquivos que você baixar.</p>
+              <div class="setting-action">
+                <span id="settingsFolder" class="path-text"></span
+                ><button id="settingsChooseFolder" class="button secondary">Escolher pasta</button>
+              </div>
+            </section>
+            <section class="setting-section">
+              <h2>Sessão das plataformas</h2>
+              <p>
+                Se Instagram, X ou TikTok pedirem login, selecione um arquivo de cookies da sua
+                sessão no formato Netscape (.txt). O Clipa usa o arquivo somente neste computador.
+              </p>
+              <div class="setting-action">
+                <span id="cookiePath" class="path-text">Nenhum arquivo selecionado</span>
+                <div class="button-group">
+                  <button id="chooseCookies" class="button secondary">Selecionar arquivo</button
+                  ><button id="clearCookies" class="text-button" hidden>Remover</button>
+                </div>
+              </div>
+              <p class="field-hint">
+                Esse arquivo dá acesso à sua sessão. Não compartilhe nem inclua no GitHub.
+              </p>
+              <button id="cookiesHelp" class="text-button">Como obter um arquivo de cookies</button>
+            </section>
+            <section class="setting-section">
+              <h2>Ferramentas locais</h2>
+              <div id="dependencyStatus" class="dependency-status">Verificando…</div>
+              <p class="field-hint">
+                As plataformas mudam com frequência. Mantenha o yt-dlp atualizado.
+              </p>
+            </section>
+            <section class="setting-section">
+              <h2>Sobre o Clipa</h2>
+              <p>
+                Uma ferramenta para guardar vídeos e áudios que você tem permissão para baixar. Não
+                contorna conteúdo privado, DRM ou restrições de acesso.
+              </p>
+              <span class="subtle-label">Versão 1.1.0</span>
+            </section>
+          </div>
+        </section>
+        <p id="toast" class="toast" role="status" hidden></p>
+      </main>
+    </div>
+    <template id="historyTemplate"
+      ><article class="history-item">
+        <span class="history-file"
+          ><svg><use href="#i-video" /></svg
+        ></span>
+        <div class="history-copy">
+          <h2></h2>
+          <p></p>
+        </div>
+        <button class="button secondary">Abrir pasta</button>
+      </article></template
+    >
+  </body>
+</html>

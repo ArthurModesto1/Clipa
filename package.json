@@ -1,0 +1,71 @@
+{
+  "name": "clipa",
+  "version": "1.1.0",
+  "description": "Baixe vídeos e áudios do YouTube, X, Instagram e TikTok no seu computador.",
+  "main": "electron/main.js",
+  "author": "Arthur Modesto",
+  "license": "MIT",
+  "scripts": {
+    "format": "prettier --write electron scripts/*.js tests/*.js package.json .prettierrc.json .github/workflows/ci.yml *.md",
+    "format:check": "prettier --check electron scripts/*.js tests/*.js package.json .prettierrc.json .github/workflows/ci.yml *.md",
+    "test": "npm run test:electron && npm run test:backend",
+    "test:electron": "node --test tests/*.test.js",
+    "test:backend": "node scripts/python-task.js test",
+    "check": "node --check electron/main.js && node --check electron/preload.js && node --check electron/renderer.js",
+    "build:backend": "node scripts/python-task.js build",
+    "start": "electron .",
+    "prebuild:win": "npm test && npm run build:backend",
+    "build:win": "electron-builder --win",
+    "build:mac": "npm test && npm run build:backend && electron-builder --mac",
+    "build:linux": "npm test && npm run build:backend && electron-builder --linux"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "electron": "^45.3.2",
+    "electron-builder": "^26.18.0",
+    "prettier": "^3.10.1"
+  },
+  "overrides": {
+    "minimatch@>=7 <11.0.1": "^11.0.1"
+  },
+  "build": {
+    "appId": "com.clipa.desktop",
+    "productName": "Clipa",
+    "files": [
+      "electron/**/*",
+      "LICENSE",
+      "THIRD_PARTY_NOTICES.md"
+    ],
+    "extraResources": [
+      {
+        "from": "python/dist/server/",
+        "to": "backend/",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "tools/",
+        "to": "tools/",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}
